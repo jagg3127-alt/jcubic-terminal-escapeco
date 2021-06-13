@@ -89,24 +89,26 @@
       if (cmd.name === 'cred') {
           term.push(["test_rpc.php", {
             progress: function(text) {
-              term.pause(true);
               var parts = text.split('::');
-              var size = +parts[0];
-              var prompt = term.get_prompt();
-              var string = progress(0, size);
-              var i = 0;
-              term.set_prompt(string);
-              (function loop() {
-                string = progress(i++, size);
+              term.clear().typing('echo', 200, parts[0], function() {
+                term.pause(true);
+                var size = +parts[1];
+                var prompt = term.get_prompt();
+                var string = progress(0, size);
+                var i = 0;
                 term.set_prompt(string);
-                if (i < 100) {
-                  timer = setTimeout(loop, 100);
-                } else {
-                  term.echo(progress(i, size) + ' [[b;green;]DONE]')
-                      .set_prompt(prompt);
-                  term.resume().echo('[[ ' + parts[1] + ' ]]');
-                }
-              })();
+                (function loop() {
+                  string = progress(i++, size);
+                  term.set_prompt(string);
+                  if (i < 100) {
+                    timer = setTimeout(loop, 100);
+                  } else {
+                    term.echo(progress(i, size) + ' [[b;green;]DONE]')
+                        .set_prompt(prompt);
+                    term.resume().echo('[[ ' + parts[2] + ' ]]');
+                  }
+                })();
+              });
             },
             send: function(text) {
               if (!text) {
