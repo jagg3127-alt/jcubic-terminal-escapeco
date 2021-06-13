@@ -95,8 +95,7 @@ class Demo {
   function unlock($token){
     $this->valid_token($token);
     $_SESSION['lock'] = false;
-    return "[[  progress 'Code x initiated echo::20 ... ' ]]";
-  }
+    return "[[ progress 'Code x initiated echo::20::echo' ]]";  }
   //----------------------------------------------------------------------------
   function logs($token, $choice = 0) {
     $this->valid_token($token);
